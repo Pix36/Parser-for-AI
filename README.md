@@ -1,2 +1,3 @@
 # Parser-for-AI
 Web parser developed in Python for automated text extraction from websites. The project collects, cleans, and structures textual content into a format suitable for AI training datasets and machine learning models. It supports HTML page scraping, text preprocessing, and data export for downstream training pipelines.
+This project is part of a university team assignment and represents the first phase of a larger ongoing system. It focuses on the development of a web text extraction parser designed to collect and preprocess data from websites for future use in AI training. The project is still in progress, with subsequent phases planned to extend its functionality and integration within a complete machine learning pipeline.
