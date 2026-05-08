@@ -1,0 +1,32 @@
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: fastapi_backend
+    ports:
+      - "8003:8003"
+    environment:
+      - PYTHONPATH=/app/backend/src
+    volumes:
+      - ./backend/src:/app/backend/src
+      - ./GS_Data:/app/GS_Data
+      - ./domini.json:/app/domini.json
+
+    command: uvicorn rest.Server:app --host 0.0.0.0 --port 8003 --reload
+
+  frontend:
+      build:
+        context: .
+        dockerfile: frontend/Dockerfile
+      container_name: fastapi_frontend
+      ports:
+        - "8004:8004"
+      environment:
+        - BACKEND_URL=http://backend:8003
+        - PYTHONUNBUFFERED=1
+      volumes:
+        - ./frontend/src:/app/frontend/src/
+      depends_on:
+        - backend
+      command: uvicorn frontend:app --host 0.0.0.0 --port 8004 --reload

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Valutazione Massiva - {{ domain }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+        html, body {
+            max-width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+
+        h2.subtitle {
+            text-align: center;
+            color: #a0aec0;
+            margin-top: 0;
+            margin-bottom: 35px;
+            font-weight: normal;
+        }
+
+        .metrics-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center; /* Centra le card in questa pagina */
+            margin-bottom: 25px;
+            align-items: stretch;
+            flex-wrap: wrap;
+        }
+
+        .metric {
+            min-width: 250px;
+            font-size: 20px;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #111;
+        }
+
+        .metric h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #ffffff;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .metric p {
+            margin: 8px 0;
+        }
+
+        .back {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back">
+        <a href="/">← Nuova Ricerca</a>
+    </div>
+
+    <h1>Risultati Valutazione Dataset</h1>
+    <h2 class="subtitle">Dominio: <b>{{ domain }}</b></h2>
+
+    {% if metrics %}
+    <div class="metrics-container">
+
+        <div class="metric">
+            <h3>Token Level (Media)</h3>
+            <p><b>Precision:</b> {{ "%.4f"|format(metrics.token_level_eval.precision) }}</p>
+            <p><b>Recall:</b> {{ "%.4f"|format(metrics.token_level_eval.recall) }}</p>
+            <p><b>F1-Score:</b> {{ "%.4f"|format(metrics.token_level_eval.f1) }}</p>
+        </div>
+
+        {% if metrics.rouge_metrics and metrics.rouge_metrics.rouge_l %}
+        <div class="metric">
+            <h3>ROUGE-L (Media)</h3>
+            <p><b>Precision:</b> {{ "%.4f"|format(metrics.rouge_metrics.rouge_l.precision) }}</p>
+            <p><b>Recall:</b> {{ "%.4f"|format(metrics.rouge_metrics.rouge_l.recall) }}</p>
+            <p><b>F1-Score:</b> {{ "%.4f"|format(metrics.rouge_metrics.rouge_l.f1) }}</p>
+        </div>
+        {% endif %}
+
+        {% if metrics.error_metrics %}
+        <div class="metric">
+            <h3>Error Rates (Media)</h3>
+            <p><b>WER:</b> {{ "%.4f"|format(metrics.error_metrics.wer) }}</p>
+            <p><b>CER:</b> {{ "%.4f"|format(metrics.error_metrics.cer) }}</p>
+        </div>
+        {% endif %}
+
+    </div>
+    {% else %}
+    <p style="text-align: center; color: #ff6b6b;">Nessuna metrica restituita dal server.</p>
+    {% endif %}
+
+</body>
+</html>

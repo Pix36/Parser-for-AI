@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scraper Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+
+    <style>
+        /* 1. RESET E COMPATTEZZA GLOBALE */
+        :root {
+            --width: 100% !important;
+        }
+
+        html, body {
+            max-width: 100% !important;
+            width: 100% !important;
+            margin: 0;
+            padding: 12px 24px; /* Ridotto padding superiore */
+            box-sizing: border-box;
+            overflow-x: hidden;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 14px; /* Ridotto margine */
+            font-size: 2rem; /* Titolo più piccolo */
+        }
+
+        h2 {
+            margin-top: 0;
+            margin-bottom: 12px;
+            font-size: 1.4rem;
+        }
+
+        /* 2. METRICHE PIÙ COMPATTE */
+        .metrics-container {
+            display: flex;
+            gap: 20px; /* Gap ridotto */
+            margin-bottom: 40px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .metric {
+            min-width: 150px;
+            font-size: 18px; /* Font ridotto */
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 5px;
+        }
+
+        .metric h3 {
+            margin: 0 0 5px 0;
+            font-size: 16px;
+        }
+
+        .metric p {
+            margin: 2px 0;
+        }
+
+        /* 3. GRID E TEXTAREA SCHIACCIATE */
+        .text-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        textarea {
+            width: 100% !important;
+            height: 45vh !important; /* Altezza basata sulla vista (più bassa) */
+            min-height: 250px; 
+            resize: vertical;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas;
+            font-size: 14px; /* Testo più denso */
+            padding: 10px;
+            border-radius: 6px;
+            box-sizing: border-box;
+            display: block;
+        }
+
+        /* 4. TENDINA HTML OTTIMIZZATA */
+        .html-dropdown {
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-top: 20px;
+            display: block;
+        }
+
+        .html-dropdown summary {
+            font-size: 16px;
+            padding: 15px;
+        }
+
+        .html-dropdown textarea {
+            height: 40vh !important; /* Ancora più bassa per non spingere tutto giù */
+            margin-top: 10px;
+            border-radius: 0 0 8px 8px; /* Arrotonda solo i bordi inferiori */
+            border: none; /* Rimuove il doppio bordo interno */
+            border-top: 1px solid #444;
+        }
+
+        .back {
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="back">
+        <a href="/">← Nuova Ricerca</a>
+    </div>
+
+    <h1>Scraper Evaluation Dashboard</h1>
+
+    {% if metrics %}
+    <h2>Metriche</h2>
+
+    <div class="metrics-container">
+
+        <div class="metric">
+            <h3>Token Level</h3>
+            <p><b>P:</b> {{ metrics.token_level_eval.precision }}</p>
+            <p><b>R:</b> {{ metrics.token_level_eval.recall }}</p>
+            <p><b>F1:</b> {{ metrics.token_level_eval.f1 }}</p>
+        </div>
+
+        {% if metrics.rouge_metrics %}
+        <div class="metric">
+            <h3>ROUGE-L</h3>
+
+            {% if metrics.rouge_metrics.rouge_l %}
+                <p><b>P:</b> {{ metrics.rouge_metrics.rouge_l.precision }}</p>
+                <p><b>R:</b> {{ metrics.rouge_metrics.rouge_l.recall }}</p>
+                <p><b>F1:</b> {{ metrics.rouge_metrics.rouge_l.f1 }}</p>
+            {% else %}
+                <p><b>P:</b> {{ metrics.rouge_metrics.precision }}</p>
+                <p><b>R:</b> {{ metrics.rouge_metrics.recall }}</p>
+                <p><b>F1:</b> {{ metrics.rouge_metrics.f1 }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        {% if metrics.error_metrics %}
+        <div class="metric">
+            <h3>Error</h3>
+            {% for key, value in metrics.error_metrics.items() %}
+                <p><b>{{ key }}:</b> {{ value }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+    </div>
+    {% endif %}
+
+    <div class="metric">
+        <h3>Page Info</h3>
+        <p><b>Title:</b> {{ title }}</p>
+        <p><b>URL:</b> <a href="{{ url }}" target="_blank">{{ url }}</a></p>
+    </div>
+
+    <div class="text-container">
+
+        <div>
+            <h2>Parsed Text</h2>
+            <textarea readonly>{{ parsed_text }}</textarea>
+        </div>
+
+        {% if gold_text %}
+        <div>
+            <h2>Gold Standard</h2>
+            <textarea readonly>{{ gold_text }}</textarea>
+        </div>
+        {% endif %}
+
+    </div>
+
+    <details class="html-dropdown">
+        <summary>Visualizza Sorgente HTML</summary>
+        <textarea readonly>{{ html_text }}</textarea>
+    </details>
+
+</body>
+</html>

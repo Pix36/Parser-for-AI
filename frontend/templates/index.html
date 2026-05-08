@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parser</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+    <style>
+        /* Sovrascrive il limite di default di water.css per usare tutto lo schermo */
+        body {
+            max-width: 95%;
+            margin: 0 auto;
+        }
+
+        .forms-row {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            flex-wrap: wrap; 
+        }
+
+        .card-form {
+            flex: 1;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            background: #2a333f;
+            box-sizing: border-box;
+        }
+
+        .card-form h3 {
+            margin-top: 0;
+        }
+
+        /* Nuova classe per allineare perfettamente input e textarea */
+        .full-width-input {
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box; /* Include padding e bordi nella larghezza totale */
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Dashboard Scraper</h1>
+
+    <section class="domains-container">
+        <h4 style="margin-top: 0;">Domini Attualmente Supportati:</h4>
+        {% if domains %}
+            {% for d in domains %}
+                <span class="domain-badge">{{ d }}</span> <br>
+            {% endfor %}
+        {% else %}
+            <p style="color: #a0aec0;">Nessun dominio caricato dal backend.</p>
+        {% endif %}
+    </section>
+
+    <hr>
+
+    <div class="forms-row">
+        
+        <form class="card-form" action="/view_full_gs" method="post">
+            <h3>Lista Dataset per Dominio</h3>
+            <select name="domain" class="full-width-input">
+                {% for d in domains %}
+                    <option value="{{d}}">{{d}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="full-width-input" style="margin-top: 15px;">Vedi Dataset</button>
+        </form>
+
+        <form class="card-form" action="/view_full_eval" method="post">
+            <h3>Valutazione Automatica</h3>
+            <select name="domain" class="full-width-input">
+                {% for d in domains %}
+                    <option value="{{d}}">{{d}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="full-width-input" style="margin-top: 15px;">Avvia Test</button>
+        </form>
+
+    </div>
+
+    <hr>
+
+    <form action="/analyze" method="post">
+        <h3>Analisi Completa (GS + Parsed + Metriche)</h3>
+
+        <label>URL</label>
+        <input type="text" name="url" placeholder="Inserisci URL" class="full-width-input" required>
+
+        <label>HTML (Opzionale)</label>
+        <textarea name="html" placeholder="Oppure incolla HTML" rows="6" class="full-width-input"></textarea>
+
+        <button type="submit" style="margin-top: 10px;">Analizza</button>
+    </form>
+
+</body>
+</html>

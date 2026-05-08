@@ -1,0 +1,23 @@
+# Web Framework (docs) e Server
+fastapi
+uvicorn
+
+# Validazione Dati
+pydantic
+
+# Richieste HTTP
+requests
+
+# Web Scraping Asincrono
+crawl4ai
+
+#Jinja2
+jinja2
+python-multipart
+
+# Valutazione ROUGE,WER,CER
+rouge-score
+jiwer
+
+# Retry logic
+tenacity

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Risultato</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+</head>
+
+<body>
+    <h1>Risultati Gold Standard per: {{ domain }}</h1>
+    
+    {% if gs_list %}
+        {% for item in gs_list %}
+            <div style="border: 2px solid black; margin-bottom: 20px; padding: 15px;">
+                <p><strong>URL:</strong> {{ item.url }}</p>
+                
+                <p><strong>Titolo:</strong> {{ item.title }}</p>
+                
+                <p><strong>Dominio:</strong> {{ item.domain }}</p>
+                
+                <p><strong>HTML:</strong></p>
+                <div style="height: 150px; overflow-y: scroll; background-color: #f0f0f0; padding: 10px; border: 1px solid #ccc; color: black">
+                    <pre style="white-space: pre-wrap; margin: 0;">{{ item.html_text }}</pre>
+                </div>
+
+                <p><strong>Gold Text:</strong></p>
+                <div style="height: 150px; overflow-y: scroll; background-color: #e8f4f8; padding: 10px; border: 1px solid #ccc; color: black">
+                    <pre style="white-space: pre-wrap; margin: 0;">{{ item.gold_text }}</pre>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nessun dato trovato per questo dominio.</p>
+    {% endif %}
+
+</body>
+</html>

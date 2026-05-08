@@ -1,0 +1,9 @@
+#Web Framework
+fastapi
+uvicorn
+jinja2
+
+python-multipart
+
+# Chiamate HTTP
+requests
